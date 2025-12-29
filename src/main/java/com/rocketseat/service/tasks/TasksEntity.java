@@ -23,4 +23,11 @@ public class TasksEntity {
     private String title;
     private LocalDateTime dueDate;
     private boolean notified;
+
+    public TasksEntity(TaskRequest request) {
+        this.title = request.email();
+        this.email = request.email();
+        this.dueDate = request.dueDate();
+        this.notified = request.notified();
+    }
 }
