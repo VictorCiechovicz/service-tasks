@@ -19,10 +19,22 @@ public class TaskService {
     public void sendNotificationForDueTasks(){
         LocalDateTime deadline = LocalDateTime.now().plusDays(1);
         List<TasksEntity> tasks = tasksRepository.findTasksDueWithinDeadline(deadline);
+        System.out.println("📋 Tarefas encontradas para notificar: " + tasks.size());
+        
         for (TasksEntity task : tasks){
-            NotificationRequest request = new NotificationRequest("Sua tarefa: " + task.getTitle() + "está prestes a vencer", task.getEmail());
-            notificationClient.sendNotification(request);
-            task.setNotified(true);
+            try {
+                NotificationRequest request = new NotificationRequest(
+                    "Sua tarefa: " + task.getTitle() + " está prestes a vencer", 
+                    task.getEmail()
+                );
+                System.out.println("📤 Enviando notificação para: " + task.getEmail() + " - Tarefa: " + task.getTitle());
+                notificationClient.sendNotification(request);
+                task.setNotified(true);
+                tasksRepository.save(task);
+                System.out.println("✅ Notificação enviada com sucesso!");
+            } catch (Exception e) {
+                System.out.println("❌ Erro ao enviar notificação: " + e.getMessage());
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ public class TasksEntity {
     private boolean notified;
 
     public TasksEntity(TaskRequest request) {
-        this.title = request.email();
+        this.title = request.title();
         this.email = request.email();
         this.dueDate = request.dueDate();
         this.notified = request.notified();
